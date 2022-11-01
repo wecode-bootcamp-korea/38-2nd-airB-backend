@@ -12,13 +12,13 @@ CREATE TABLE products(
   bedroom_quantity INT NOT NULL,
   bathroom_quantity INT NOT NULL,
   bed_quantity INT NOT NULL,
-  buildingtype_id INT NOT NULL,
+  building_type_id INT NOT NULL,
   theme_id INT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (city_id) REFERENCES cities(id),
   FOREIGN KEY (host_id) REFERENCES hosts(id),
-  FOREIGN KEY (buildingtype_id) REFERENCES buildingtypes(id),
+  FOREIGN KEY (building_type_id) REFERENCES building_types(id),
   FOREIGN KEY (theme_id) REFERENCES themes(id)
 );
 -- migrate:down
