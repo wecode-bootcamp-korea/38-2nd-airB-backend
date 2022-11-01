@@ -192,3 +192,6 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,dotenv,linux,node
+
+## schema.sql
+db/schema.sql
