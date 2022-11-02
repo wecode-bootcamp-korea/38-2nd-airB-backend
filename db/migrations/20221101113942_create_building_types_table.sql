@@ -4,4 +4,4 @@ CREATE TABLE building_types(
     name VARCHAR(100) NOT NULL
 );
 -- migrate:down
-DROP TABLE building_types;
+DROP TABLE building_types; 

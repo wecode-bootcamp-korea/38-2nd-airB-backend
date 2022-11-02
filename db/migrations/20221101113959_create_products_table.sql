@@ -8,7 +8,7 @@ CREATE TABLE products(
   longitude DECIMAL(20,15) NULL,
   city_id INT NOT NULL,
   host_id INT NOT NULL,
-  guest_max INT NOT NULL,
+  user_max INT NOT NULL,
   bedroom_quantity INT NOT NULL,
   bathroom_quantity INT NOT NULL,
   bed_quantity INT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE products(
   updated_at TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (city_id) REFERENCES cities(id),
   FOREIGN KEY (host_id) REFERENCES hosts(id),
-  FOREIGN KEY (buildingtype_id) REFERENCES buildingtypes(id),
+  FOREIGN KEY (buildingtype_id) REFERENCES building_types(id),
   FOREIGN KEY (theme_id) REFERENCES themes(id)
 );
 -- migrate:down
