@@ -5,7 +5,7 @@ CREATE TABLE reservations(
     product_id INT NOT NULL,
     check_in DATE NOT NULL,
     check_out DATE NOT NULL,
-    user_count INT NOT NULL,
+    guest_count INT NOT NULL,
     reservation_status_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
