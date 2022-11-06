@@ -1,6 +1,6 @@
 const reservationRouter = require('express').Router();
 const reservationController = require('../controllers/reservationController');
 
-reservationRouter.post('/:productId', reservationController.postReservation);
+reservationRouter.get('/user/:userId', reservationController.getReservationByUserId);
 
 module.exports = reservationRouter;
