@@ -32,6 +32,20 @@ const getUserByKaKaoId = async(kakaoId) => {
     return result[0];
 };
 
+const getUserById = async(userId) => {
+    const result = await appDataSource.query(`
+        SELECT
+            u.id AS userId,
+            u.name,
+            h.id AS hostId
+        FROM users u
+        LEFT JOIN hosts h ON u.id=h.user_id
+        WHERE u.id=?;`,
+        [userId]
+    )
+    return result[0];
+};
+
 const updateUserInfo = async(kakaoId, name, profileImage) => {
     const result = await appDataSource.query(`
         UPDATE users
@@ -47,5 +61,6 @@ const updateUserInfo = async(kakaoId, name, profileImage) => {
 module.exports = {
     createUser,
     getUserByKaKaoId,
+    getUserById,
     updateUserInfo
 }
