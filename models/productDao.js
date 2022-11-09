@@ -1,8 +1,8 @@
-const database = require('./dataSource');
+const appDataSource = require('./dataSource');
 
 const getProductDetailsByProductId = async (productId) => {
     try{
-        return await database.query(`
+        return await appDataSource.query(`
         SELECT
             p.id,
             p.title,
@@ -61,6 +61,55 @@ const getProductDetailsByProductId = async (productId) => {
     }
 }
 
-module.exports = {
-    getProductDetailsByProductId
+const getFilteredOption = async (reservationDateOption, roomTypeOption, cityOption, priceOption, guestOption, limitOffsetOption) => {
+    return await appDataSource.query(
+    `
+    SELECT DISTINCT
+        p.id, 
+        p.title, 
+        p.price, 
+        p.bed_quantity, 
+        p.bathroom_quantity, 
+        p.bedroom_quantity, 
+        b.name building_type,
+        c.name city,  
+        t.name 테마유형, 
+        p.guest_max,
+        JSON_ARRAYAGG(i.url) image,
+        reservations.reservedDates,
+        longitude, 
+        latitude
+    FROM products p
+    LEFT JOIN building_types b ON building_type_id = b.id
+    LEFT JOIN cities c ON c.id = p.city_id 
+    LEFT JOIN images i ON p.id = i.product_id
+    LEFT JOIN themes t ON t.id = p.theme_id
+    LEFT JOIN reservations r ON p.id = r.product_id
+    LEFT JOIN (
+        SELECT 
+            r.product_id as productId,
+            JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'check_in',r.check_in,
+                    'check_out',r.check_out
+                )
+            ) reservedDates
+    FROM reservations r
+    JOIN products p on p.id = r.product_id
+    ${reservationDateOption}
+    ${roomTypeOption} 
+    ${cityOption} 
+    GROUP BY p.id, r.id
+    ${priceOption} 
+    ${guestOption}
+    ${limitOffsetOption}
+    `
+   ) 
 }
+
+
+module.exports = {
+    getProductDetailsByProductId,
+    getFilteredOption
+}
+
