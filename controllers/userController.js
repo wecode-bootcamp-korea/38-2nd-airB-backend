@@ -32,8 +32,8 @@ const signIn = catchAsync(async(req, res) => {
   const birthday = null;
   const phoneNumber = null;
 
-  const accessToken = await userService.getUserByKaKaoId(kakaoId, name, profileImage, email, birthday, phoneNumber, DEFAULT_POINT);
-  res.status(200).json({ 'accessToken': accessToken });
+  const userInfo = await userService.getUserByKaKaoId(kakaoId, name, profileImage, email, birthday, phoneNumber, DEFAULT_POINT);
+  res.status(200).json({'userInfo': userInfo });
 });
 
 module.exports = {
