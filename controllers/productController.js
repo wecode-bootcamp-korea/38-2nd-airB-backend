@@ -2,6 +2,7 @@ const productService = require('../services/productService');
 const { catchAsync } = require('../utils/error');
 
 const getProductDetails = catchAsync(async (req, res) => {
+    const productId = req.params
     const detail = await productService.getProductDetailsByProductId(productId);
 
     return res.status(200).json({ data : detail });

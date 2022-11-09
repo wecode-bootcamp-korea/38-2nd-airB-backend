@@ -43,6 +43,7 @@ const getUserById = async(userId) => {
         WHERE u.id=?;`,
         [userId]
     )
+    
     return result[0];
 };
 
