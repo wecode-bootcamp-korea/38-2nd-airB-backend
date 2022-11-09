@@ -9,17 +9,17 @@ const loginRequired = async(req, res, next) => {
         const error = new Error('NEED_ACCESS_TOKEN');
         error.statusCode = 401;
 
-        return res.status(error.statusCode) = json({ meassage: error.message });   
+        return res.status(error.statusCode).json({ meassage: error.message });   
     }
 
     const decoded = await promisify(jwt.verify)(accessToken, process.env.JWT_SECRET);
-    const user = await userService.getUserById(decoded.id);
+    const user = await userService.getUserById(decoded.userId);
 
     if (!user) {
         const error = new Error('USER_DOES_NOT_EXIST');
         error.statusCode = 404;
 
-        return res.status(error.statusCode) = json({ meassage: error.message });  
+        return res.status(error.statusCode).json({ meassage: error.message });  
     }
 
     req.user = user;

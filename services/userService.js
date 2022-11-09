@@ -64,7 +64,7 @@ const getUserByKaKaoId = async(kakaoId, name, profileImage, email, birthday, pho
     await updateUserInfo(kakaoId, name, profileImage);
   }
 
-  const accessToken = jwt.sign({userId: user.userId, hostId: user.hostId}, process.env.JWT_SECRET, {
+  const accessToken = jwt.sign({userId: user.userId}, process.env.JWT_SECRET, {
     algorithm: process.env.ALGORITHM,
     expiresIn: process.env.JWT_EXPIRES_IN
   });
