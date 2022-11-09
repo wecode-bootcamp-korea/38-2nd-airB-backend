@@ -44,12 +44,12 @@ const getProductDetailsByProductId = async (productId) => {
                 WHERE holidays.product_id = ${productId} 
             ) holidays
         FROM products p
-        INNER JOIN images i ON i.product_id = p.id
-        INNER JOIN hosts h ON p.host_id = h.id
-        INNER JOIN users u ON u.id = h.user_id
-        INNER JOIN cities c ON p.city_id = c.id
-        INNER JOIN themes t ON p.theme_id = t.id
-        INNER JOIN building_types b ON b.id = p.building_type_id
+        LEFT JOIN images i ON i.product_id = p.id
+        LEFT JOIN hosts h ON p.host_id = h.id
+        LEFT JOIN users u ON u.id = h.user_id
+        LEFT JOIN cities c ON p.city_id = c.id
+        LEFT JOIN themes t ON p.theme_id = t.id
+        LEFT JOIN building_types b ON b.id = p.building_type_id
         WHERE p.id = ${productId}
         `);
     }
