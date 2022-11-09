@@ -2,17 +2,19 @@ const request = require("supertest");
 const axios = require('axios');
 require('dotenv').config();
 const { createApp } = require("../app");
-const userService = require('../services/userService');
 const appDataSource = require("../models/dataSource");
-const { describe } = require("yargs");
+const userService = require('../services/userService');
 
 jest.mock('axios');
-jest.mock('qs');
 
 describe('user/signin', () => {
 
     let app;
 
+    const req = {
+        query: {authorizationCode: ["authorizationCode", "1234", undefined]}
+    };
+    
     const res = {
         status: jest.fn(() => res)
     }
@@ -33,10 +35,6 @@ describe('user/signin', () => {
         
         test('SUCCESS: signIn', async() => {
 
-            const req = {
-                query: {authorizationCode: "authorizationCode"}
-            };
-
             axios.post.mockResolvedValue({
                 data: {
                     access_token: 'y5ik3-HjB1LwCnq69WlEIfIbEjBjK90_OWo38pYACisMpgAAAYRaETgs',
@@ -49,7 +47,7 @@ describe('user/signin', () => {
             })
     
             await request(app)
-                .get(`/user/signin?authorizationCode=${req.query.authorizationCode}`)
+                .get(`/user/signin?authorizationCode=${req.query.authorizationCode[0]}`)
                 .send({
                     method: 'post',
                     url: 'https://kauth.kakao.com/oauth/token',
@@ -67,14 +65,10 @@ describe('user/signin', () => {
     
         it('FAILED: authorizationCode_IS_NOT_VALID', async() => {
 
-            const req = {
-                query: {authorizationCode: "1234"}
-            };
-
             axios.post.mockRejectedValue(new Error("KEY_ERROR"))
     
             await request(app)
-                .get(`/user/signin?authorizationCode=${req.query.authorizationCode}`)
+                .get(`/user/signin?authorizationCode=${req.query.authorizationCode[1]}`)
                 .send({
                     method: 'post',
                     url: 'https://kauth.kakao.com/oauth/token',
@@ -91,10 +85,6 @@ describe('user/signin', () => {
         });
     
         it('FAILED: NEED_authorizationCode', async() => {
-
-            const req = {
-                query: {authorizationCode: undefined}
-            };
 
             axios.post.mockRejectedValue(new Error("Request failed with status code 400"))
     
