@@ -10,7 +10,7 @@ const REST_API_KEY = process.env.REST_API_KEY;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 
 const getKakaoAccessToken = async(authorizationCode) => {
-
+  
   return await axios({
     method: 'post',
     url: 'https://kauth.kakao.com/oauth/token',

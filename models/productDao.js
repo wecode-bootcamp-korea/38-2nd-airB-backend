@@ -1,6 +1,7 @@
 const appDataSource = require('./dataSource');
 
 const getProductDetailsByProductId = async (productId) => {
+
     try{
         return await appDataSource.query(`
         SELECT
@@ -31,7 +32,7 @@ const getProductDetailsByProductId = async (productId) => {
                         )
                     )
                 FROM reservations r
-                WHERE r.product_id = ${productId}
+                WHERE r.product_id = ${productId.productId}
             ) reservations,
             (
                 SELECT 
@@ -41,7 +42,7 @@ const getProductDetailsByProductId = async (productId) => {
                             'check_out',holidays.end_date
                     )
                 )FROM holidays
-                WHERE holidays.product_id = ${productId} 
+                WHERE holidays.product_id = ${productId.productId} 
             ) holidays
         FROM products p
         LEFT JOIN images i ON i.product_id = p.id
@@ -50,7 +51,7 @@ const getProductDetailsByProductId = async (productId) => {
         LEFT JOIN cities c ON p.city_id = c.id
         LEFT JOIN themes t ON p.theme_id = t.id
         LEFT JOIN building_types b ON b.id = p.building_type_id
-        WHERE p.id = ${productId}
+        WHERE p.id = ${productId.productId}
         `);
     }
 
