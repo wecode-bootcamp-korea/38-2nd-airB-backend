@@ -1,6 +1,7 @@
 const appDataSource = require('./dataSource');
 
 const createUser = async(kakaoId, name, profileImage, email, birthday, phoneNumber, DEFAULT_POINT) => {
+
     const result = await appDataSource.query(`
         INSERT INTO users (
             name,
@@ -14,6 +15,7 @@ const createUser = async(kakaoId, name, profileImage, email, birthday, phoneNumb
         VALUES (?, ?, ?, ?, ?, ?, ?);`,
         [name, profileImage, kakaoId, email, birthday, phoneNumber, DEFAULT_POINT]
     )
+
     return result.insertId
 };
 
@@ -29,6 +31,7 @@ const getUserByKaKaoId = async(kakaoId) => {
         WHERE u.kakao_id=?;`,
         [kakaoId]
         )
+    
     return result[0];
 };
 

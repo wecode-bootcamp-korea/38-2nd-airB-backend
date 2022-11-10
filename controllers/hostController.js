@@ -11,7 +11,7 @@ const hostingProductByUserId = catchAsync(async (req, res) => {
     const images = req.files.map(file=>file.location);
 
     if( !title || !price || !latitude || !longitude || !description || !bed || !bedroom || !bathroom 
-        || !guestMax || !buildingTypeId || !cityId || !themeId || !hostDescription || images ) { 
+        || !guestMax || !buildingTypeId || !cityId || !themeId || !hostDescription || !images ) { 
             const error = new Error('KEY_ERROR');
             error.statusCode = 400;
             throw error;

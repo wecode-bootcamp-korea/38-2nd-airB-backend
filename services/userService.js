@@ -54,7 +54,6 @@ const updateUserInfo = async(kakaoId, name, profileImage) => {
 
 const getUserByKaKaoId = async(kakaoId, name, profileImage, email, birthday, phoneNumber, DEFAULT_POINT) => {
   let user = await userDao.getUserByKaKaoId(kakaoId);
-  const userId = user.userId
 
   if (!user) {
     await saveUserInfo(kakaoId, name, profileImage, email, birthday, phoneNumber, DEFAULT_POINT);
@@ -64,6 +63,8 @@ const getUserByKaKaoId = async(kakaoId, name, profileImage, email, birthday, pho
   if (user) {
     await updateUserInfo(kakaoId, name, profileImage);
   }
+
+  const userId = user.userId
 
   const accessToken = jwt.sign({userId: user.userId}, process.env.JWT_SECRET, {
     algorithm: process.env.ALGORITHM,
