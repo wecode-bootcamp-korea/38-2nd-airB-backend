@@ -2,7 +2,7 @@ const appDataSource = require('./dataSource');
 const { reservationStatusEnum } = require('../enum')
 
 const postReservation = async ( userId, productId, checkIn, checkOut, guestCount ) => {
-
+    
     try {
         const result = await appDataSource.query(`
             INSERT INTO reservations (
@@ -140,7 +140,7 @@ const validationChecker = async ( productId, userId, checkIn, checkOut, guestCou
 
 const getReservationByUserId = async (userId) => {
     try{
-        return await database.query(`
+        return await appDataSource.query(`
         SELECT
                 c.name city,
                 u.name hostName,

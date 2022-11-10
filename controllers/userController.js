@@ -29,10 +29,9 @@ const signIn = catchAsync(async(req, res) => {
   const email = kakaoUserInfo['kakao_account']['email'];
   const DEFAULT_POINT = 10000000;
   const birthday = null;
-  const phoneNumber = null;
+  const phoneNumber = null;  
 
   const userInfo = await userService.getUserByKaKaoId(kakaoId, name, profileImage, email, birthday, phoneNumber, DEFAULT_POINT);
-
   res.status(200).json({'userInfo': userInfo });
 });
 
