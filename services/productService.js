@@ -11,10 +11,9 @@ const getFilteredOption = async(lowprice, highprice, bed, bathroom, bedroom, apa
 
         if((!checkIn && !checkOut) || (!checkIn || !checkOut)){
             return `GROUP by r.product_id
-                ) reservations on p.id = reservations.productId`;
+            ) reservations on p.id = reservations.productId`;
         }
-
-        else if(checkIn && checkOut){
+        if(checkIn && checkOut){
             return `WHERE (
                         p.id IN (SELECT r.product_id FROM reservations WHERE r.check_in BETWEEN ${checkIn} AND ${checkOut})
                         OR p.id IN (SELECT r.product_id FROM reservations WHERE r.check_out BETWEEN ${checkIn} AND ${checkOut})
@@ -23,14 +22,16 @@ const getFilteredOption = async(lowprice, highprice, bed, bathroom, bedroom, apa
                     GROUP by r.product_id
                     ) reservations ON p.id = reservations.productId WHERE reservations.reservedDates is NULL`
         }
+
     }
     
     const reservationDateOption = await filteredRerservationDate(checkIn, checkOut);
-
+   
     const filteredOption = async(bed, bathroom, bedroom, apartmentType, guesthouseType, hotelType, themeId) => {
 
         let result = `WHERE`;
         let result2 = ``;
+        let result3 = '';
         let count = 0;
         let count2 = 0; 
 
@@ -92,22 +93,30 @@ const getFilteredOption = async(lowprice, highprice, bed, bathroom, bedroom, apa
             if(bedroom) result2 += ` and p.bedroom_quantity = ${+bedroom}`;
                 
             if(apartmentType){
-                result2 += ` and b.id = ${+apartmentType}`;
+                result2 += ` and ` + `(b.id = ${+apartmentType}`;
                 count++;
             }
             if(guesthouseType){
-                if(count==0) result2 += ` and b.id = ${+guesthouseType}`;
-                else result2 += ` or b.id = ${+guesthouseType}`;
+                if(count==0) result2 += ` and ` +`(b.id = ${+guesthouseType}`;
+                else {
+                    result3 += ` or b.id = ${+guesthouseType}`;
+                    count2++;
+                };
                 count++;
             }
             if(hotelType){
-                if(count==0) result2 += ` and b.id = ${+hotelType}`;
-                else result2 += ` or b.id = ${+hotelType}`;
+                if(count==0) result2 += ` and ` +`(b.id = ${+hotelType}`;
+                else {
+                    result3 += ` or b.id = ${+hotelType}`;
+                    count2++;
+                };
                 count++;
             }
-         
-            if(themeId) result2 += ` and t.id = ${+themeId}`;
+           
+            if(count2!=0) result2 += result3 + `)`; 
+            if(count!=0 && count2==0) result2 += `)`; 
             
+            if(themeId) result2 += ` and t.id = ${+themeId}`;
             if(!themeId) result2 += ``;
             
             return result2;
