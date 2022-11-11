@@ -11,7 +11,7 @@ const getProductDetails = catchAsync(async (req, res) => {
 const getFilteredOption = catchAsync (async (req, res) => {
 
     const { lowprice, highprice, bed, bathroom, bedroom, apartmentType, guesthouseType, hotelType, themeId, guest, city, checkIn, checkOut, limit, offset} = req.query;
-
+    
     const result = await productService.getFilteredOption(lowprice, highprice, bed, bathroom, bedroom, apartmentType, guesthouseType, hotelType, themeId, guest, city, checkIn, checkOut, limit, offset);
     
     res.status(200).json({data : result});
