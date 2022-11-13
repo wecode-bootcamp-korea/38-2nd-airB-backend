@@ -1,7 +1,7 @@
 const appDataSource = require('./dataSource');
 const { reservationStatusEnum } = require('../enum')
 
-const postReservation = async ( userId, productId, checkIn, checkOut, guestCount ) => {
+const postReservation = async ( userId, productId, checkInDate, checkOutDate, guestCount ) => {
     
     try {
         const result = await appDataSource.query(`
@@ -13,7 +13,7 @@ const postReservation = async ( userId, productId, checkIn, checkOut, guestCount
                 guest_count,
                 reservation_status_id
             ) VALUE ( ?, ?, ?, ?, ?, ${reservationStatusEnum.COMPLETE} )
-            `, [ userId, productId, checkIn, checkOut, guestCount ]
+            `, [ userId, productId, checkInDate, checkOutDate, guestCount ]
         );
         return result;
     } catch (err) {
@@ -23,7 +23,7 @@ const postReservation = async ( userId, productId, checkIn, checkOut, guestCount
     }
 }
 
-const validationChecker = async ( productId, userId, checkIn, checkOut, guestCount, stayLength ) => {
+const validationChecker = async ( productId, userId, checkInDate, checkOutDate, guestCount, stayLength ) => {
     const queryRunner = appDataSource.createQueryRunner();
 
     const guestCheck = async (productId) => {
@@ -102,7 +102,7 @@ const validationChecker = async ( productId, userId, checkIn, checkOut, guestCou
             }
             return arrayStartToLastDate;
         }
-        const arrayPostReservation = getDatesStartToLast(checkIn,checkOut)
+        const arrayPostReservation = getDatesStartToLast(checkInDate,checkOutDate)
         const arrayGetReservation =[]; 
 
         if(reservationValidate !== null){
@@ -125,7 +125,7 @@ const validationChecker = async ( productId, userId, checkIn, checkOut, guestCou
             WHERE id = ${userId}
         `)
         
-        postReservation( userId, productId, checkIn, checkOut, guestCount );
+        postReservation( userId, productId, checkInDate, checkOutDate, guestCount );
 
         await queryRunner.commitTransaction();
         await queryRunner.release();
@@ -148,8 +148,8 @@ const getReservationByUserId = async (userId) => {
                 (
                     SELECT
                         JSON_OBJECT(
-                            "checkIn",r.check_in,
-                            "checkOut",r.check_out
+                            "checkInDate",r.check_in,
+                            "checkOutDate",r.check_out
                         )
                 )reservation
             FROM reservations r

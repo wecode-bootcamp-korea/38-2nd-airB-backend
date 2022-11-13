@@ -5,7 +5,6 @@ const postReservation = catchAsync(async (req, res) => {
     const userId = req.user.userId;
     
     const { productId, checkIn, checkOut, guestCount } = req.body;
-
     const stayLength = (Date.parse(checkOut) - Date.parse(checkIn))/1000/60/60/24
 
     if ( !userId || !checkIn || !checkOut || !guestCount|| !stayLength){

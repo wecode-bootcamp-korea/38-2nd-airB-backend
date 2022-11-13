@@ -9,7 +9,7 @@ const hostingProductByUserId = catchAsync(async (req, res) => {
         guestMax, buildingTypeId, cityId, themeId, hostDescription } = req.body;
         
     const images = req.files.map(file=>file.location);
-
+        
     if( !title || !price || !latitude || !longitude || !description || !bed || !bedroom || !bathroom 
         || !guestMax || !buildingTypeId || !cityId || !themeId || !hostDescription || !images ) { 
             const error = new Error('KEY_ERROR');
